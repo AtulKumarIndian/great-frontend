@@ -21,7 +21,7 @@ try{
 catch(e){
     console.error(e.message);
 }
-let res1 = [1,-2,,3].myreduce(sumOfSquares1);
+let res1 = [1,-2,,3].myreduce(sumOfSquares1,2);
 
 
 console.log(res1, 'result'); // 30

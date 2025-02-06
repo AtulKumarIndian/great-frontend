@@ -9,28 +9,28 @@
 // Calling debounce() returns a function which has debounced invocations of the callback function following 
 // the behavior described above.
 
-let i = 0;
-function increment(a) {
-  i = i+a;
-}
-const debouncedIncrement = debounces(increment, 100);
+// let i = 0;
+// function increment(a) {
+//   i = i+a;
+// }
+// const debouncedIncrement = debounces(increment, 100);
 
-// t = 0: Call debouncedIncrement().
-debouncedIncrement(5); // i = 0
-console.log(i, 'above setTimeout');
+// // t = 0: Call debouncedIncrement().
+// debouncedIncrement(5); // i = 0
+// console.log(i, 'above setTimeout');
 
-setTimeout(() => {
-    debouncedIncrement(5);
-    console.log(i , 'inside 1st setTimeout');
-}, 110)
+// setTimeout(() => {
+//     debouncedIncrement(5);
+//     console.log(i , 'inside 1st setTimeout');
+// }, 110)
 
-debouncedIncrement(); // i = 0
-console.log(i, 'below setTimeout');
+// // debouncedIncrement(); // i = 0
+// // console.log(i, 'below setTimeout');
 
-setTimeout(() => {
-    debouncedIncrement();
-    console.log(i , 'inside 3nd setTimeout');
-}, 2000)
+// setTimeout(() => {
+//     debouncedIncrement(5);
+//     console.log(i , 'inside 3nd setTimeout');
+// }, 2000)
 // t = 50: i is still 0 because 100ms have not passed.
 //  Call debouncedIncrement() again.
 // i = 0
@@ -42,14 +42,36 @@ setTimeout(() => {
 //  the last debouncedIncrement() at t = 50,
 //  increment was invoked and i is now 1 .
 // Debounce with a cancel() method to cancel delayed invocations and a flush() method to immediately invoke them.
+const increment = debounces(function(a){
+    return this.val += a;
+},10);
+
+const ob = {
+    val: 2,
+    increment,
+}
+
+
 function debounces (func, wait) {
     let timeout; // creates a closure to store the timeout
     return function(...args) {
         timeout = null;
         clearTimeout(timeout); // clears the timeout each time the function is called
         timeout = setTimeout(() => {
-            func.apply(this,args); // calls the function after the wait time
+            console.log(args)
+
+            func.apply(this,[...args]); // calls the function after the wait time
         }, wait);
 
     }
 }
+
+
+console.log(ob.val); // i = 0
+setTimeout(() => {
+    ob.increment(10,20);
+    console.log(ob.val); // i = 0
+}, 1000);
+setTimeout(() => {
+    console.log(ob.val); // i = 0
+}, 1100);
